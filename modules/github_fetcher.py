@@ -37,6 +37,16 @@ class GitHubProfileFetcher:
                         following {{
                           totalCount
                         }}
+                        repository(name: "{username}") {{
+                          object(expression: "HEAD:README.md") {{
+                            ... on Blob {{
+                              text
+                            }}
+                          }}
+                          defaultBranchRef {{
+                            name
+                          }}
+                        }}
                         repositories(first: 100, orderBy: {{field: UPDATED_AT, direction: DESC}}) {{
                           totalCount
                           nodes {{
@@ -105,6 +115,11 @@ class GitHubProfileFetcher:
             )
             graphql_response.raise_for_status()
 
+            readme_content = ''
+            if graphql_data.get('repository') is not None:
+                profile_repo = graphql_data.get('repository', {})
+                readme_content = profile_repo.get('object', {}).get('text', '')
+
             graphql_data = graphql_response.json().get('data', {}).get('user', {})
             if not graphql_data:
                 raise ValueError(f"User '{username}' not found or query returned no data.")
@@ -133,7 +148,8 @@ class GitHubProfileFetcher:
                     'total_contributions': graphql_data['contributionsCollection']['contributionCalendar']['totalContributions'],
                     'repositories_contributed_to': graphql_data['repositoriesContributedTo']['totalCount'],
                 },
-                'social_accounts': GitHubProfileFetcher.social_accounts(username)
+                'social_accounts': GitHubProfileFetcher.social_accounts(username),
+                'readme_content' : readme_content,
             }
 
         except requests.exceptions.HTTPError as e:

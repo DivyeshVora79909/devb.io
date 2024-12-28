@@ -1,0 +1,14 @@
+{
+    "error": "An unexpected error occurred: User 'ppy' not found or query returned no data.",
+    "activity_summary": {
+        "ppy/osu": {
+            "link": "https://github.com/ppy/osu",
+            "summary": "Recent activities in the osu repository include fixes to angle bonuses calculation and distance scaling application. Additionally, there have been updates to pause playback when entering gameplay test from the editor, addressing issues such as #312. These changes aim to improve gameplay and editor functionality, with multiple pull requests and push events in the last 48 hours."
+        },
+        "ppy/osu-framework": {
+            "link": "https://github.com/ppy/osu-framework",
+            "summary": "The osu-framework repository has seen updates to the FFmpeg build configuration, specifically using the `macos-13` CI image. This change is in response to the deprecation of the `macos-12` image, which had disabled the macOS jobs. The update aims to ensure compatibility with older macOS versions and has been deployed through a recent pull request and push event."
+        }
+    },
+    "profile_summary": null
+}
